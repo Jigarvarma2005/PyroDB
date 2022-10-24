@@ -35,7 +35,7 @@ class PyroDB:
                         if len(data) > 4090:
                             raise Exception("data must be less than 4090 characters")
                         if not isinstance(x, dict):
-                            json.loads(x)
+                            x = json.loads(x)
                         new_data.append(x)
                     data = new_data
                 elif isinstance(data, str):
