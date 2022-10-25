@@ -51,7 +51,7 @@ class PyroDB:
                 if isinstance(data, list):
                     new_data = []
                     for x in data:
-                        new_data.append(self.validate(x))
+                        new_data.append(self.validate(x, is_entry))
                     data = new_data
                 elif isinstance(data, str):
                     if len(data) > 4090:
