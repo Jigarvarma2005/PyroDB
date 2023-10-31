@@ -35,7 +35,10 @@ class PyroDB:
             bot.start()
         except:
             pass
-        if  not self.bot.get_chat_member(chat_id, "me").status in [ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]:
+        if self.bot.get_chat_member(chat_id, "me").status not in [
+            ChatMemberStatus.ADMINISTRATOR,
+            ChatMemberStatus.OWNER,
+        ]:
             raise Exception("User is not admin in the chat")
         if self.bot.get_chat(chat_id).type == ChatType.PRIVATE:
             raise Exception("Chat must be a group")
@@ -69,10 +72,7 @@ class PyroDB:
 
     def dict_to_str(self, data) -> str:
         """Convert dict to str"""
-        if isinstance(data, dict):
-            return json.dumps(data)
-        else:
-            return data
+        return json.dumps(data) if isinstance(data, dict) else data
     
     async def get_many(self, data: dict, limit: int = 100, is_dev=False) -> List[dict]:
         """Get many reuslt of query
@@ -107,10 +107,7 @@ class PyroDB:
         try:
             async for msg in self.bot.search_messages(chat_id=self.chat_id, query=self.dict_to_str(data), limit=1):
                 if msg:
-                    if not is_dev:
-                        return self.validate(msg.text)
-                    else:
-                        return msg
+                    return self.validate(msg.text) if not is_dev else msg
         except Exception as e:
             self.logger.exception(e)
             return None
